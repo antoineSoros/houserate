@@ -1,102 +1,65 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getOccupants, getTotalPrice } from '../data'
-
-function getNightsBetween(start, end) {
-  const dates = []
-  let current = new Date(start)
-  const last = new Date(end)
-  while (current < last) {
-    dates.push(current.toISOString().split('T')[0])
-    current.setDate(current.getDate() + 1)
-  }
-  return dates
-}
+import { getOccupants, getTotalPrice, getDateRange, calculateShares } from '../data'
 
 function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
 export default function Calculator() {
-  const [arrival, setArrival] = useState('')
-  const [departure, setDeparture] = useState('')
-  const [people, setPeople] = useState(1)
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState('')
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    setError('')
-    setResult(null)
-
-    if (!arrival || !departure || arrival >= departure || people < 1) {
-      setError('Veuillez entrer des valeurs valides.')
-      return
-    }
-
-    const nightlyOccupants = getOccupants()
+  const { shares, startDate, endDate } = useMemo(() => {
+    const occupants = getOccupants()
     const totalPrice = getTotalPrice()
-    const pricePerNight = totalPrice / 7
-    const nights = getNightsBetween(arrival, departure)
-    let totalForOnePerson = 0
-
-    nights.forEach(date => {
-      const occupants = nightlyOccupants[date]
-      if (occupants) {
-        totalForOnePerson += pricePerNight / occupants
-      }
-    })
-
-    setResult({
-      arrival,
-      departure,
-      people,
-      total: (totalForOnePerson * people).toFixed(2),
-    })
-  }
+    const dateRange = getDateRange()
+    return {
+      shares: calculateShares(occupants, totalPrice),
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+    }
+  }, [])
 
   return (
     <div className="container">
       <h1>💰 Part Maison</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="arrival">Date d'arrivée</label>
-        <input
-          type="date"
-          id="arrival"
-          value={arrival}
-          onChange={e => setArrival(e.target.value)}
-          required
-        />
 
-        <label htmlFor="departure">Date de départ</label>
-        <input
-          type="date"
-          id="departure"
-          value={departure}
-          onChange={e => setDeparture(e.target.value)}
-          required
-        />
+      {startDate && endDate && (
+        <p className="stay-range">
+          📅 Séjour du <strong>{formatDate(startDate)}</strong> au <strong>{formatDate(endDate)}</strong>
+        </p>
+      )}
 
-        <label htmlFor="people">Nombre de personnes</label>
-        <input
-          type="number"
-          id="people"
-          min="1"
-          value={people}
-          onChange={e => setPeople(parseInt(e.target.value))}
-          required
-        />
-
-        <button type="submit">Calculer</button>
-      </form>
-
-      {error && <div id="result">❌ {error}</div>}
-
-      {result && (
-        <div id="result">
-          <p>✅ Séjour du <strong>{formatDate(result.arrival)}</strong> au <strong>{formatDate(result.departure)}</strong></p>
-          <p>👥 Nombre de personnes : <strong>{result.people}</strong></p>
-          <p>💶 Montant total à payer : <strong>{result.total} €</strong></p>
+      {shares.length === 0 ? (
+        <p style={{ textAlign: 'center', color: '#888' }}>Aucun occupant configuré.</p>
+      ) : (
+        <div className="summary">
+          <h2>📋 Résumé des parts</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Personnes</th>
+                <th>Nuits</th>
+                <th>Total à payer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shares.map(o => (
+                <tr key={o.id}>
+                  <td data-label="Nom">{o.name || <em style={{ color: '#aaa' }}>—</em>}</td>
+                  <td data-label="Personnes">{o.persons}</td>
+                  <td data-label="Nuits">{o.nights}</td>
+                  <td data-label="Total à payer"><strong>{o.totalPrice.toFixed(2)} €</strong></td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={3} data-label="Total"><strong>Total</strong></td>
+                <td data-label=""><strong>{shares.reduce((s, o) => s + o.totalPrice, 0).toFixed(2)} €</strong></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       )}
 

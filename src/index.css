@@ -1,3 +1,8 @@
+/* ── Base ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
@@ -5,9 +10,14 @@ body {
   padding: 0;
 }
 
+a {
+  color: #28a745;
+}
+
+/* ── Calculator page ──────────────────────────────────── */
 .container {
-  max-width: 400px;
-  margin: 40px auto;
+  max-width: 480px;
+  margin: 24px auto;
   padding: 20px;
   background: #fff;
   border-radius: 12px;
@@ -17,26 +27,242 @@ body {
 h1 {
   text-align: center;
   color: #333;
+  margin-top: 0;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.stay-range {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin: -4px 0 16px;
 }
 
-label {
-  margin-top: 10px;
-  margin-bottom: 4px;
+/* ── Summary table (Calculator) ───────────────────────── */
+.summary {
+  margin-top: 24px;
+}
+
+.summary h2 {
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.summary th,
+.summary td {
+  padding: 8px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.summary thead tr {
+  background-color: #f0f0f0;
   color: #555;
 }
 
-input {
-  padding: 10px;
+.summary tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.summary tfoot tr {
+  background-color: #eafaf1;
+  color: #1a7a3c;
+}
+
+/* ── Config page ──────────────────────────────────────── */
+.config-page {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.config-page h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.config-page h2 {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #28a745;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.config-section {
+  margin-bottom: 24px;
+}
+
+.config-section label {
+  display: block;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.config-section > input[type="number"] {
+  width: 180px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* ── Date range row ───────────────────────────────────── */
+.date-range-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-field label {
+  font-weight: 600;
+  color: #555;
+  font-size: 13px;
+  margin: 0;
+}
+
+.date-field input {
+  padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
 }
 
+.nights-badge {
+  padding: 8px 14px;
+  background-color: #eafaf1;
+  border: 1px solid #a9dfbf;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #1a7a3c;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+.nights-badge--invalid {
+  color: #e74c3c;
+}
+
+.date-summary {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #666;
+}
+
+/* ── Occupants table ──────────────────────────────────── */
+.occupants-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.occupants-table th {
+  background-color: #f0f0f0;
+  color: #555;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.th-hint {
+  font-weight: normal;
+  color: #999;
+  font-size: 12px;
+}
+
+.occupants-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.occupants-table td input[type="text"] {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.occupants-table td input[type="number"] {
+  width: 64px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.occupants-table td input[type="date"] {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 150px;
+}
+
+.occupants-table tfoot tr {
+  background-color: #eafaf1;
+  color: #1a7a3c;
+}
+
+.nights-readonly {
+  display: inline-block;
+  min-width: 36px;
+  padding: 6px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.nights-invalid {
+  color: #bbb;
+  font-weight: normal;
+}
+
+.price-cell {
+  font-weight: 600;
+  color: #1a7a3c;
+}
+
+.empty-occupants {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
 button {
   margin-top: 20px;
   padding: 12px;
@@ -52,13 +278,285 @@ button:hover {
   background-color: #218838;
 }
 
-#result {
-  margin-top: 20px;
-  text-align: center;
-  font-weight: bold;
-  color: #444;
+.remove-btn {
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 13px;
+  background-color: #e74c3c;
 }
 
-a {
-  color: #28a745;
+.remove-btn:hover {
+  background-color: #c0392b;
+}
+
+.add-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #3498db;
+}
+
+.add-btn:hover {
+  background-color: #2980b9;
+}
+
+.config-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.save-btn {
+  margin: 0;
+  padding: 10px 24px;
+  font-size: 15px;
+  background-color: #2ecc71;
+}
+
+.save-btn:hover {
+  background-color: #27ae60;
+}
+
+.reset-btn {
+  margin: 0;
+  padding: 10px 24px;
+  font-size: 15px;
+  background-color: #e74c3c;
+}
+
+.reset-btn:hover {
+  background-color: #c0392b;
+}
+
+.config-status {
+  text-align: center;
+  margin-top: 16px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* ── Mobile: ≤ 640px ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .container,
+  .config-page {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100svh;
+    padding: 16px;
+  }
+
+  .config-section > input[type="number"] {
+    width: 100%;
+  }
+
+  /* Date range stacks vertically */
+  .date-range-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-field input {
+    width: 100%;
+  }
+
+  .nights-badge {
+    text-align: center;
+  }
+
+  /* Occupants table → cards */
+  .occupants-table thead {
+    display: none;
+  }
+
+  .occupants-table,
+  .occupants-table tbody,
+  .occupants-table tr,
+  .occupants-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .occupants-table tbody tr {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: #fafafa;
+  }
+
+  .occupants-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 8px 0;
+    text-align: right;
+  }
+
+  .occupants-table td:last-child {
+    border-bottom: none;
+    justify-content: flex-end;
+  }
+
+  .occupants-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  .occupants-table td[data-label=""] {
+    justify-content: flex-end;
+  }
+
+  .occupants-table td[data-label=""]::before {
+    display: none;
+  }
+
+  .occupants-table td input[type="text"],
+  .occupants-table td input[type="number"] {
+    width: auto;
+    flex: 1;
+    max-width: 180px;
+    font-size: 16px;
+  }
+
+  /* Date cells stack label above input so the picker has full width */
+  .occupants-table td.date-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .occupants-table td.date-cell::before {
+    margin-right: 0;
+  }
+
+  .occupants-table td input[type="date"] {
+    width: 100%;
+    font-size: 16px;
+    min-height: 40px;
+  }
+
+  /* Tfoot as a summary bar */
+  .occupants-table tfoot,
+  .occupants-table tfoot tr,
+  .occupants-table tfoot td {
+    display: block;
+    width: 100%;
+  }
+
+  .occupants-table tfoot tr {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background-color: #eafaf1;
+  }
+
+  .occupants-table tfoot td {
+    border: none;
+    padding: 0;
+    text-align: right;
+  }
+
+  /* Hide empty colspan filler cells in tfoot */
+  .occupants-table tfoot td:empty {
+    display: none;
+  }
+
+  /* Summary table (Calculator) → cards */
+  .summary table thead {
+    display: none;
+  }
+
+  .summary table,
+  .summary tbody,
+  .summary tr,
+  .summary td {
+    display: block;
+    width: 100%;
+  }
+
+  .summary tbody tr {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: #fafafa;
+  }
+
+  .summary td {
+    display: flex;
+    justify-content: space-between;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 6px 0;
+    text-align: right;
+  }
+
+  .summary td:last-child {
+    border-bottom: none;
+  }
+
+  .summary td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  .summary td[data-label=""]::before {
+    display: none;
+  }
+
+  .summary tfoot,
+  .summary tfoot tr,
+  .summary tfoot td {
+    display: block;
+    width: 100%;
+  }
+
+  .summary tfoot tr {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  .summary tfoot td {
+    border: none;
+    padding: 0;
+  }
+
+  .summary tfoot td:empty {
+    display: none;
+  }
+
+  .config-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-btn,
+  .reset-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
